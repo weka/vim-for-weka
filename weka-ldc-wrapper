@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# Shamelessly copied from the original DMD wrapper in ALE
+
+set -eu
+
+while [ ! -f weka_version ]; do
+  if [ $PWD == / ]; then
+    exit
+  fi
+  cd ..
+done
+
+flags() {
+  echo -Iweka/external/d2sqlite3/source
+  echo -Iweka/external/kxml/source
+
+  echo -mtriple=x86_64-pc-linux-gnu
+  echo -d-version=trace
+  echo -d-version=dlang_version_2_070
+
+  echo -d
+}
+
+
+temp_dir=$(mktemp -d 2>/dev/null || mktemp -d -t 'ale_linters')
+temp_file="$temp_dir/file.d"
+trap 'rm -r "$temp_dir"' EXIT
+
+while read -r; do
+  echo "$REPLY" >> "$temp_file"
+done
+
+# /files/builds/weka-ldc/ldc/build/bin/ldc2 $(flags) "$@" "$temp_file"
+$WEKA_LDC $(flags) "$@" "$temp_file"
