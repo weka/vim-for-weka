@@ -16,6 +16,7 @@ Features
     Requirements & configurations:
     * ALE(obviously) - https://github.com/w0rp/ale
     * Build Weka's LDC fork - https://github.com/weka-io/ldc
+      * On Mac with Homebrew, `brew tap weka-io/homebrew-ldc && brew install ldc-weka`
     * In your vimrc, set `g:weka_ldcPath` to the path of LDC2 binary you built
 
 * Setting Python paths so that [JEDI](https://github.com/davidhalter/jedi-vim)
