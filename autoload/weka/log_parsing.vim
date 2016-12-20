@@ -61,6 +61,9 @@ function! weka#log_parsing#fillQuickfixFromTestlightErrors(source, jump) abort
 	let l:entries = []
 	for l:line in systemlist(printf('%s | awk --field-separator=\| %s', l:logFetchingCommand, shellescape(l:awkCommand)))
 		let l:match = matchlist(l:line, '\v(\S+\.py):(\d+)\s+\.{2,}\s+(.*)')
+		if empty(l:match)
+			let l:match = matchlist(l:line, '\v\@(\S+\.d)\((\d+)\): (.*)$')
+		endif
 		if !empty(l:match)
 			let l:entry = {
 						\ 'filename': l:match[1],
@@ -75,6 +78,7 @@ function! weka#log_parsing#fillQuickfixFromTestlightErrors(source, jump) abort
 				continue
 			endif
 		endif
+
 		call add(l:entries, {'text': l:line})
 	endfor
 	call setqflist(l:entries)
