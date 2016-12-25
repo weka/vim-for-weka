@@ -4,7 +4,7 @@
 function! s:FindWrapperScript()
     for l:parent in split(&runtimepath, ',')
         " Expand the path to deal with ~ issues.
-        let l:path = expand(l:parent . '/' . 'weka-ldc-wrapper')
+        let l:path = expand(l:parent . '/scripts/weka-ldc-wrapper')
 
         if filereadable(l:path)
             return l:path

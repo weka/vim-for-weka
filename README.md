@@ -35,3 +35,20 @@ Features
     * Provide a build key as argument to fetch logs from a Bamboo/Reggie build.
       Set `g:weka_useDeka` to `1` to use `deka logs` instead of `teka logs`
       when fetching from S3.
+
+* `scripts/viewer-nvim.py` - a script for opening Neovim from the trace
+  viewer(when pressing `V`).
+
+    Requirements & configurations:
+    * `pip install plumbum`
+    * `pip install neovim`
+    * When running the viewer, set the `WEKA_SRC_VIEWER` to the path of the
+      script.
+
+    The script can run with both Python2 and Python3, but you'll need to
+    install the `plumbum` and `neovim` packages for the version you use. To
+    force the script to run with the specific version, set `WEKA_SRC_VIEWER` to
+    launch the specific Python interpreter:
+    ```
+    export WEKA_SRC_VIEWER='python3 /path/to/viewer-nvim.py'
+    ```
