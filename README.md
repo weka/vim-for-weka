@@ -52,3 +52,27 @@ Features
     ```
     export WEKA_SRC_VIEWER='python3 /path/to/viewer-nvim.py'
     ```
+* The `wekaticket` - need to set `g:weka_ticketFiletype`
+
+    Activated when opening Vim to edit a comment in a JIRA ticket with a plugin
+    that can open Vim from the browser. Currently supported plugins:
+    * [It's All Text!](https://addons.mozilla.org/en-US/firefox/addon/its-all-text/)
+
+    Note that this filetype is only useful if you have the `$WEKAPP_PATH`
+    environment path set to path of the Weka project root. Without it, it won't
+    be able to run `./teka.py`/`./deka`.
+
+    If you set `g:weka_ticketFiletype_changeDir` and have the environment
+    variable `$WEKAPP_PATH` set to the path of the project root, entering the
+    `wekaticket` filetype will automatically move you to the weka project root.
+    This is useful for copying pieces of code from the project to the comment.
+
+    The `:WekaPasteTraces` command will paste to then next line the last trace
+    dump from `viewer.output`.
+
+    The following [Terminalogy](https://github.com/idanarye/vim-terminalogy)
+    templates will be added:
+    * `testlight` - read the `testlight`, with an `awk` filter to remove the
+      clutter columns.
+    * `artifacts` - read artifacts of one of the hosts. The first argument is
+      the host number, and the second is the name of the artifact.

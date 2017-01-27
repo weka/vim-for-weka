@@ -54,7 +54,7 @@ function! weka#log_parsing#fillQuickfixFromTestlightErrors(source, jump) abort
 		let l:logFetchingCommand = weka#tdekaCommand('-q logs '.shellescape(a:source).' testlight.log')
 	endif
 
-	let l:wekaProjectPath = weka#wekaProjectPath()
+	let l:wekaProjectPath = weka#wekaProjectPathOrGlobal()
 	" Clear the flag before printing and set it after, so that the lines that
 	" set and clear the flag will not be printed.
 	let l:awkCommand = '/'.s:timestampAwkPattern.'/ {now_reading = 0} now_reading == 1 {print} /^Traceback/ {now_reading = 1}'

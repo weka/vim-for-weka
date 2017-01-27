@@ -17,7 +17,16 @@ function! weka#isPathInWekaProject() abort
 	return !empty(weka#wekaProjectPath())
 endfunction
 
-function! weka#tdekaCommand(cmd)
+function! weka#wekaProjectPathOrGlobal() abort
+	let l:wekaProjectPath = weka#wekaProjectPath()
+	if empty(l:wekaProjectPath)
+		return $WEKAPP_PATH
+	else
+		return l:wekaProjectPath
+	endif
+endfunction
+
+function! weka#tdekaCommand(cmd) abort
 	let l:wekaProjectPath = weka#wekaProjectPath()
 	if get(g:, 'weka_useDeka', 0)
 		let l:tool = './deka'
@@ -27,8 +36,6 @@ function! weka#tdekaCommand(cmd)
 	return printf('cd %s; %s %s', shellescape(l:wekaProjectPath), l:tool, a:cmd)
 endfunction
 
-function! weka#tdeka(cmd)
+function! weka#tdeka(cmd) abort
 	return systemlist(weka#tdekaCommand(a:cmd))
 endfunction
-
-
