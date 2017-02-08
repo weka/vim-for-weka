@@ -33,7 +33,9 @@ Features
     * Set `g:weka_logsDir` to the dir containing the log files. The default is
       `~/tmp/weka/logs`.
     * Provide a build key as argument to fetch logs from a Bamboo/Reggie build.
-      Set `g:weka_useDeka` to `1` to use `deka logs` instead of `teka logs`
+    * If the _wekaticet_ feature is set, and you are editing a ticket, running
+      without arguments will fetch the logs of the ticket you are editing.
+    * Set `g:weka_useDeka` to `1` to use `deka logs` instead of `teka logs`
       when fetching from S3.
 
 * `scripts/viewer-nvim.py` - a script for opening Neovim from the trace

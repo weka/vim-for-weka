@@ -46,15 +46,26 @@ endfunction
 
 " Leave source empty to read from local log
 function! weka#log_parsing#fillQuickfixFromTestlightErrors(source, jump) abort
-	if empty(a:source)
+	let l:wekaProjectPath = weka#wekaProjectPathOrGlobal()
+	if empty(l:wekaProjectPath)
+		echoerr 'Can not locate the Weka project path'
+		return
+	endif
+
+	if empty(a:source) && has_key(b:, 'weka_ticketKey')
+		let l:source = b:weka_ticketKey
+	else
+		let l:source = a:source
+	endif
+
+	if empty(l:source)
 		let l:logFile = weka#log_parsing#logsFile('testlight.log')
 		let l:lastSessionStartLine = weka#log_parsing#lastTestlightSessionStartLine()
 		let l:logFetchingCommand = 'awk "'.l:lastSessionStartLine.'<=NR" '.l:logFile
 	else
-		let l:logFetchingCommand = weka#tdekaCommand('-q logs '.shellescape(a:source).' testlight.log')
+		let l:logFetchingCommand = weka#tdekaCommand('-q logs '.shellescape(l:source).' testlight.log')
 	endif
 
-	let l:wekaProjectPath = weka#wekaProjectPathOrGlobal()
 	" Clear the flag before printing and set it after, so that the lines that
 	" set and clear the flag will not be printed.
 	let l:awkCommand = '/'.s:timestampAwkPattern.'/ {now_reading = 0} now_reading == 1 {print} /^Traceback/ {now_reading = 1}'
