@@ -17,6 +17,7 @@ flags() {
   echo -Iweka/external/kxml/source
   echo -Iweka/external/jwtd/source
   echo -Iweka/external/deimos/openssl
+  echo -Iweka/external/zstd-d/source
 
 
   echo -mtriple=x86_64-pc-linux-gnu
