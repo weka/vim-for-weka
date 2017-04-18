@@ -6,10 +6,12 @@ if has('python') || has('python3')
 		if has('python')
 			python import sys
 			execute 'python '.s:cmd
+			python __import__('deps')
 		endif
 		if has('python3')
 			python3 import sys
 			execute 'python3 '.s:cmd
+			python3 __import__('deps')
 		endif
 	endif
 endif
