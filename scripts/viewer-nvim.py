@@ -3,29 +3,43 @@
 from time import sleep
 import re
 import os
+import tempfile
+import shlex
 
 from plumbum import cli, local, BG
 from neovim import socket_session, Nvim
 
 
 def find_nvim_servers():
-    for nvim_server_path in local.path('/tmp').glob('nvim*/0'):
+    for nvim_server_path in local.path(tempfile.gettempdir()).glob('nvim*/0'):
         nvim = Nvim.from_session(socket_session(str(nvim_server_path)))
         if nvim.eval('weka#isPathInWekaProject()'):
             yield nvim
 
 
 ppid_patern = re.compile(r'PPid:\s+(\d+)')
+cmd_to_get_ppid_and_args = local['ps']['-o', 'ppid,cmd', '--no-headers']
+
+
+def get_ppid_and_args(pid):
+    args = shlex.split(cmd_to_get_ppid_and_args(pid))
+    return int(args[0]), args[1:]
+
+
+cmd_to_get_pwd = local['lsof']['-a', '-d', 'cwd', '-n', '-F']['-p']
+
+
+def get_process_wd(pid):
+    for field in cmd_to_get_pwd(pid).splitlines():
+        if field.startswith('n'):
+            return local.path(field[1:])
 
 
 def find_weka_dir():
     def iter_parents(pid):
-        procdir = local.path('/proc') / pid
-        args = procdir.join('cmdline').read().decode('utf8').split('\0')
-        cwd = local.path(os.readlink(str(procdir / 'cwd')))
+        ppid, args = get_ppid_and_args(pid)
+        cwd = get_process_wd(pid)
         yield cwd, args
-        m = ppid_patern.search(procdir.join('status').read().decode('utf8'))
-        ppid = int(m.group(1))
         if 1 < ppid:
             for item in iter_parents(ppid):
                 yield item
@@ -58,6 +72,7 @@ class Main(cli.Application):
             with local.cwd(find_weka_dir()):
                 local['nvim-qt']['--', '-c', command] & BG
                 sleep(1)
+
 
 if __name__ == '__main__':
     Main.run()
