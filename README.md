@@ -45,6 +45,8 @@ Features
     * Set `g:weka_useDeka` to `1` to use `deka logs` instead of `teka logs`
       when fetching from S3.
 
+* `:WekaTekaErrors` command: does the same thing for `teka.log`.
+
 * `scripts/viewer-nvim.py` - a script for opening Neovim from the trace
   viewer(when pressing `V`).
 
@@ -81,7 +83,8 @@ Features
 
     The following [Terminalogy](https://github.com/idanarye/vim-terminalogy)
     templates will be added:
-    * `testlight` - read the `testlight`, with an `awk` filter to remove the
-      clutter columns.
+    * `testlight` - read the `testlight.log`, with an `awk` filter to remove
+      the clutter columns.
+    * `teka` - same thing for `teka.log`.
     * `artifacts` - read artifacts of one of the hosts. The first argument is
       the host number, and the second is the name of the artifact.

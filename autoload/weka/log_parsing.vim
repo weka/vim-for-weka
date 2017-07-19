@@ -45,7 +45,7 @@ function! weka#log_parsing#lastTestlightSessionStartLine() abort
 endfunction
 
 " Leave source empty to read from local log
-function! weka#log_parsing#fillQuickfixFromTestlightErrors(source, jump) abort
+function! weka#log_parsing#fillQuickfixFromInfraLogfileErrors(source, logfile, jump) abort
 	let l:wekaProjectPath = weka#wekaProjectPathOrGlobal()
 	if empty(l:wekaProjectPath)
 		echoerr 'Can not locate the Weka project path'
@@ -59,11 +59,11 @@ function! weka#log_parsing#fillQuickfixFromTestlightErrors(source, jump) abort
 	endif
 
 	if empty(l:source)
-		let l:logFile = weka#log_parsing#logsFile('testlight.log')
+		let l:logFile = weka#log_parsing#logsFile(a:logfile)
 		let l:lastSessionStartLine = weka#log_parsing#lastTestlightSessionStartLine()
 		let l:logFetchingCommand = 'awk "'.l:lastSessionStartLine.'<=NR" '.l:logFile
 	else
-		let l:logFetchingCommand = weka#tdekaCommand('-q logs '.shellescape(l:source).' testlight.log')
+		let l:logFetchingCommand = weka#tdekaCommand('-q logs '.shellescape(l:source).' '.a:logfile)
 	endif
 
 	" Clear the flag before printing and set it after, so that the lines that

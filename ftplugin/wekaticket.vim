@@ -17,6 +17,10 @@ let b:terminalogy_basic = {
 			\ 'implicitFilters': ['sed "s,\x1B\[[0-9;]*[a-zA-Z],,g"'],
 			\ }
 
+let b:terminalogy_templates.teka = extend({
+			\ 'command': printf('%s -q logs %s teka.log | awk -F\| ''/\0/ {print $1" | "$2" | "$7}''', s:tdekaCommand, b:weka_ticketKey),
+			\ }, b:terminalogy_basic)
+
 let b:terminalogy_templates.testlight = extend({
 			\ 'command': printf('%s -q logs %s testlight.log | awk -F\| ''/\0/ {print $1" | "$2" | "$7}''', s:tdekaCommand, b:weka_ticketKey),
 			\ }, b:terminalogy_basic)
