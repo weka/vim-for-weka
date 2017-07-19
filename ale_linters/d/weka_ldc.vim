@@ -1,19 +1,7 @@
 " Shamelessly copied from the original DMD linter in ALE
 
-" A function for finding the dmd-wrapper script in the Vim runtime paths
-function! s:FindWrapperScript()
-    for l:parent in split(&runtimepath, ',')
-        " Expand the path to deal with ~ issues.
-        let l:path = expand(l:parent . '/scripts/weka-ldc-wrapper')
-
-        if filereadable(l:path)
-            return l:path
-        endif
-    endfor
-endfunction
-
 function! ale_linters#d#weka_ldc#GetCommand(buffer)
-    let l:wrapper_script = s:FindWrapperScript()
+    let l:wrapper_script = weka#vfwScriptPath('weka-ldc-wrapper')
 
     let l:command = l:wrapper_script . ' -o- -vcolumns -c'
 

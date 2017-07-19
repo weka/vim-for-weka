@@ -1,0 +1,17 @@
+#!/usr/bin/python3
+
+import sys
+
+if '.' not in sys.path:
+    sys.path.append('.')
+
+try:
+    import deps
+except ImportError:
+    pass
+
+import pycodestyle
+pycodestyle.MAX_LINE_LENGTH = 130
+
+import pyls.__main__
+pyls.__main__.main()

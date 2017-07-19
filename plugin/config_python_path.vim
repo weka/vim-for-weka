@@ -15,3 +15,11 @@ if has('python') || has('python3')
 		endif
 	endif
 endif
+
+if exists('g:LanguageClient_serverCommands.python')
+	if g:LanguageClient_serverCommands.python == ['pyls']
+		if !empty(weka#wekaProjectPath())
+			let g:LanguageClient_serverCommands.python = [weka#vfwScriptPath('pyls-for-weka')]
+		endif
+	endif
+endif
