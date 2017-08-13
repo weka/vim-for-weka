@@ -13,5 +13,9 @@ except ImportError:
 import pycodestyle
 pycodestyle.MAX_LINE_LENGTH = 130
 
+import yapf
+yapf.style.SetGlobalStyle(yapf.style.CreateStyleFromConfig('{column_limit: 130}'))
+
+
 import pyls.__main__
 pyls.__main__.main()
