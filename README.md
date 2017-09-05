@@ -39,7 +39,7 @@ Features
 
     * Set `g:weka_logsDir` to the dir containing the log files. The default is
       `~/tmp/weka/logs`.
-    * Provide a build key as argument to fetch logs from a Bamboo/Reggie build.
+    * Provide a job key as argument to fetch logs from a Bamboo/Reggie build.
     * If the _wekaticet_ feature is set, and you are editing a ticket, running
       without arguments will fetch the logs of the ticket you are editing.
     * Set `g:weka_useDeka` to `1` to use `deka logs` instead of `teka logs`
@@ -63,7 +63,7 @@ Features
     ```
     export WEKA_SRC_VIEWER='python3 /path/to/viewer-nvim.py'
     ```
-* The `wekaticket` - need to set `g:weka_ticketFiletype`
+* The `wekaticket` filetype - need to set `g:weka_ticketFiletype`
 
     Activated when opening Vim to edit a comment in a JIRA ticket with a plugin
     that can open Vim from the browser. Currently supported plugins:
@@ -88,3 +88,11 @@ Features
     * `teka` - same thing for `teka.log`.
     * `artifacts` - read artifacts of one of the hosts. The first argument is
       the host number, and the second is the name of the artifact.
+
+* `:WekaInvestigate` command: opens `teka investigate` terminal.
+
+    * Requires Neovim or Vim8 with the terminal feature(`:echo has('terminal')`)
+    * Provide a job key as argument to investigate Bamboo/Reggie build.
+    * If the _wekaticet_ feature is set, and you are editing a ticket, running
+      without arguments will investigate the ticket you are editing.
+    * Set `g:weka_useDeka` to `1` to use `deka investigate` instead of `teka investigate`.
