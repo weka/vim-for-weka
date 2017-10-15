@@ -86,6 +86,9 @@ Features
     * `testlight` - read the `testlight.log`, with an `awk` filter to remove
       the clutter columns.
     * `teka` - same thing for `teka.log`.
+    * `jrpc` - same thing for `jrpc.log`.
+    * `objects-log` - same thing for `objects.log`, where the **changes** in configuration are logged.
+    * `objects-yaml` - same thing for `objects.yaml.log`, where the **final** configuration is dumped.
     * `artifacts` - read artifacts of one of the hosts. The first argument is
       the host number, and the second is the name of the artifact.
 

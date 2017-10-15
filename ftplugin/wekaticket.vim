@@ -25,6 +25,18 @@ let b:terminalogy_templates.testlight = extend({
 			\ 'command': printf('%s -q logs %s testlight.log | awk -F\| ''/\0/ {print $1" | "$2" | "$7}''', s:tdekaCommand, b:weka_ticketKey),
 			\ }, b:terminalogy_basic)
 
+let b:terminalogy_templates.jrpc = extend({
+			\ 'command': printf('%s -q logs %s logs/jrpc.log | awk -F\| ''/\0/ {print $1" | "$2" | "$6" | "$7}''', s:tdekaCommand, b:weka_ticketKey),
+			\ }, b:terminalogy_basic)
+
+let b:terminalogy_templates['objects-log'] = extend({
+			\ 'command': printf('%s -q logs %s logs/objects.log | awk -F\| ''/\0/ {print $1" | "$7}''', s:tdekaCommand, b:weka_ticketKey),
+			\ }, b:terminalogy_basic)
+
+let b:terminalogy_templates['objects-yaml'] = extend({
+			\ 'command': printf('%s -q logs %s logs/objects.yaml.log | awk -F\| ''/\0/''', s:tdekaCommand, b:weka_ticketKey),
+			\ }, b:terminalogy_basic)
+
 let b:terminalogy_templates.artifacts = extend({
 			\ 'command': printf('%s -q logs %s-\1 \2 | awk -F\| ''/\0/''', s:tdekaCommand, b:weka_ticketKey),
 			\ 'complete_2': [
