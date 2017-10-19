@@ -68,6 +68,7 @@ Features
     Activated when opening Vim to edit a comment in a JIRA ticket with a plugin
     that can open Vim from the browser. Currently supported plugins:
     * [It's All Text!](https://addons.mozilla.org/en-US/firefox/addon/its-all-text/)
+    * [Textern](https://addons.mozilla.org/en-US/firefox/addon/textern/)
 
     Note that this filetype is only useful if you have the `$WEKAPP_PATH`
     environment path set to path of the Weka project root. Without it, it won't

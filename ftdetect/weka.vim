@@ -4,4 +4,5 @@ function! s:detect() abort
 	endif
 endfunction
 
-au BufReadPost,BufNewFile /home/idanarye/.mozilla/firefox/**/itsalltext/wekaio.atlassian.*.txt call s:detect()
+au BufReadPost,BufNewFile /home/*/.mozilla/firefox/**/itsalltext/wekaio.atlassian.*.txt call s:detect()
+au BufReadPost,BufNewFile /tmp/textern-*/wekaio.atlassian.net*.txt call s:detect()
