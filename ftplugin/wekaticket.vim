@@ -3,8 +3,13 @@ if !exists('b:terminalogy_templates')
 endif
 
 setlocal textwidth=0
-let b:weka_ticketKey = matchstr(bufname(''), '\v\CWEKAPP-\d+')
-let s:tdekaCommand = get(g:, 'weka_useDeka', 0) ? './deka' : './teka.py'
+let g:weka_ticketKey = matchstr(bufname(''), '\v\C(WEKAPP|REG)-\d+')
+if empty(g:weka_ticketKey) && exists('$GHOST_TEXT_TITLE')
+	let g:weka_ticketKey = matchstr($GHOST_TEXT_TITLE, '\v\C(WEKAPP|REG)-\d+')
+endif
+if !empty(g:weka_ticketKey)
+	WekaLoadTicketInfo
+endif
 
 if get(g:, 'weka_ticketFiletype_changeDir') && exists('$WEKAPP_PATH')
 	cd $WEKAPP_PATH
@@ -12,47 +17,42 @@ endif
 
 let b:terminalogy_basic = {
 			\ 'linesAbove': ['{noformat}'],
+			\ 'linesBetween': [''],
 			\ 'linesBelow': ['{noformat}'],
 			\ 'runInDir': weka#wekaProjectPathOrGlobal(),
 			\ 'implicitFilters': ['sed "s,\x1B\[[0-9;]*[a-zA-Z],,g"'],
 			\ }
 
 let b:terminalogy_templates.teka = extend({
-			\ 'command': printf('%s -q logs %s teka.log | awk -F\| ''/\0/'' | cut -d\| -f1,2,7-', s:tdekaCommand, b:weka_ticketKey),
+			\ 'command': printf('./teka -q logs %s teka.log 2>/dev/null | awk -F\| ''/\0/'' | cut -d\| -f1,2,7-', g:weka_ticketKey),
 			\ }, b:terminalogy_basic)
 
 let b:terminalogy_templates.testlight = extend({
-			\ 'command': printf('%s -q logs %s testlight.log | awk -F\| ''/\0/'' | cut -d\| -f1,2,7-', s:tdekaCommand, b:weka_ticketKey),
+			\ 'command': printf('./teka -q logs %s testlight.log 2>/dev/null | awk -F\| ''/\0/'' | cut -d\| -f1,2,7-', g:weka_ticketKey),
 			\ }, b:terminalogy_basic)
 
 let b:terminalogy_templates.jrpc = extend({
-			\ 'command': printf('%s -q logs %s logs/jrpc.log | awk -F\| ''/\0/'' | cut -d\| -f1,2,6,7-', s:tdekaCommand, b:weka_ticketKey),
+			\ 'command': printf('./teka -q logs %s logs/jrpc.log 2>/dev/null | awk -F\| ''/\0/'' | cut -d\| -f1,2,6,7-', g:weka_ticketKey),
 			\ }, b:terminalogy_basic)
 
 let b:terminalogy_templates['objects-log'] = extend({
-			\ 'command': printf('%s -q logs %s logs/objects.log | awk -F\| ''/\0/'' | cut -d\| -f1,7-', s:tdekaCommand, b:weka_ticketKey),
+			\ 'command': printf('./teka -q logs %s logs/objects.log 2>/dev/null | awk -F\| ''/\0/'' | cut -d\| -f1,7-', g:weka_ticketKey),
 			\ }, b:terminalogy_basic)
 
 let b:terminalogy_templates['objects-yaml'] = extend({
-			\ 'command': printf('%s -q logs %s logs/objects.yaml.log | awk -F\| ''/\0/''', s:tdekaCommand, b:weka_ticketKey),
+			\ 'command': printf('./teka -q logs %s logs/objects.yaml.log 2>/dev/null | awk -F\| ''/\0/''', g:weka_ticketKey),
 			\ }, b:terminalogy_basic)
 
+function! s:complete_artifacts(args)
+	if !exists('g:weka_ticketFields.artifacts')
+		echoerr 'List of artifacts not loaded yet'
+		return []
+	endif
+	return copy(g:weka_ticketFields.artifacts)
+endfunction
 let b:terminalogy_templates.artifacts = extend({
-			\ 'command': printf('%s -q logs %s-\1 \2 | awk -F\| ''/\0/''', s:tdekaCommand, b:weka_ticketKey),
-			\ 'complete_2': [
-			\	'boot.log',
-			\	'exceptions.log',
-			\	'kernel.log',
-			\	'kernel_sibling.log',
-			\	'output.log',
-			\   'shelld.log',
-			\   'supervisord.log',
-			\	'syslog.log',
-			\	'syslog_sibling.log',
-			\   'system_events.log',
-			\   'talker.log',
-			\   'wekamond.log',
-			\ ],
+			\ 'command': printf('./teka -q logs %s \1 2>/dev/null | awk -F\| ''/\0/''', g:weka_ticketKey),
+			\ 'complete_1': function('s:complete_artifacts')
 			\ }, b:terminalogy_basic)
 
 function! s:readTracesToBuffer() abort

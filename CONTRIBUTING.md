@@ -6,7 +6,7 @@ specific to Weka. This includes, but is not limited to:
 
 * Configurations and adjustments for Vim plugins to work properly with the Weka
   codebase.
-* Vim functions and commands that integrate Weka tools(teka/deka) into Vim's
+* Vim functions and commands that integrate Weka tools(teka) into Vim's
   features.
 
 What it isn't
@@ -15,12 +15,12 @@ What it isn't
 This repository **should not** contain:
 
 * Weka things that are useful for users of lesser text editors. These belong in
-  teka/deka commands, so that other Weka developers can use them. Note that
-  category does not include things that integrate with Vim features even if
-  other editors have them - for example code to populate Vim's quickfix list
-  from Weka errors belongs here, even if Sublime has a similar feature, because
-  a teka/deka command will not be able to populate these lists so Sublime will
-  need it's own implementation anyways.
+  teka commands, so that other Weka developers can use them. Note that category
+  does not include things that integrate with Vim features even if other
+  editors have them - for example code to populate Vim's quickfix list from
+  Weka errors belongs here, even if Sublime has a similar feature, because a
+  teka command will not be able to populate these lists so Sublime will need
+  it's own implementation anyways.
 * General Vim things that are useful outside Weka. These belong in their own
   plugins.
 * Configuration tweaks that make Vim a nicer experience for you. These are your

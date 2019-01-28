@@ -14,7 +14,7 @@ endfunction
 
 function! weka#log_parsing#fillQuickfixFromBuildLog(jump) abort
 	echo 'Fetching compilation errors from build server'
-	let l:lines = weka#tdeka('-q bs --no-tmux -n "grep ../logs/build.log -e Error:" | sed "s/.*<<\(.*Error.*\)>>/\1/p" -n')
+	let l:lines = weka#teka('-q bs --no-tmux -n "grep ../logs/build.log -e Error:" | sed "s/.*<<\(.*Error.*\)>>/\1/p" -n')
 	let l:entries = map(l:lines, 's:parseLine(v:val)')
 	let l:entries = filter(l:entries, '!empty(v:val)')
 	echo 'Found '.len(l:entries).' compilation errors'
@@ -52,8 +52,8 @@ function! weka#log_parsing#fillQuickfixFromInfraLogfileErrors(source, logfile, j
 		return
 	endif
 
-	if empty(a:source) && has_key(b:, 'weka_ticketKey')
-		let l:source = b:weka_ticketKey
+	if empty(a:source) && has_key(g:, 'weka_ticketKey')
+		let l:source = g:weka_ticketKey
 	else
 		let l:source = a:source
 	endif
@@ -63,7 +63,7 @@ function! weka#log_parsing#fillQuickfixFromInfraLogfileErrors(source, logfile, j
 		let l:lastSessionStartLine = weka#log_parsing#lastTestlightSessionStartLine()
 		let l:logFetchingCommand = 'awk "'.l:lastSessionStartLine.'<=NR" '.l:logFile
 	else
-		let l:logFetchingCommand = weka#tdekaCommand('-q logs '.shellescape(l:source).' '.a:logfile)
+		let l:logFetchingCommand = weka#tekaCommand('-q logs '.shellescape(l:source).' '.a:logfile)
 	endif
 
 	" Clear the flag before printing and set it after, so that the lines that

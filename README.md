@@ -32,8 +32,6 @@ Features
 * `:WekaBuildErrors` command: fills the quickfix list with compilation errors
   fetched from the build server.
 
-    * Set `g:weka_useDeka` to `1` to use `deka` instead of `teka`.
-
 * `:WekaTestErrors` command: fills the quickfix list with Python exceptions
   from `testlight.log`.
 
@@ -42,8 +40,6 @@ Features
     * Provide a job key as argument to fetch logs from a Bamboo/Reggie build.
     * If the _wekaticet_ feature is set, and you are editing a ticket, running
       without arguments will fetch the logs of the ticket you are editing.
-    * Set `g:weka_useDeka` to `1` to use `deka logs` instead of `teka logs`
-      when fetching from S3.
 
 * `:WekaTekaErrors` command: does the same thing for `teka.log`.
 
@@ -72,7 +68,7 @@ Features
 
     Note that this filetype is only useful if you have the `$WEKAPP_PATH`
     environment path set to path of the Weka project root. Without it, it won't
-    be able to run `./teka.py`/`./deka`.
+    be able to run `./teka`.
 
     If you set `g:weka_ticketFiletype_changeDir` and have the environment
     variable `$WEKAPP_PATH` set to the path of the project root, entering the
@@ -90,8 +86,8 @@ Features
     * `jrpc` - same thing for `jrpc.log`.
     * `objects-log` - same thing for `objects.log`, where the **changes** in configuration are logged.
     * `objects-yaml` - same thing for `objects.yaml.log`, where the **final** configuration is dumped.
-    * `artifacts` - read artifacts of one of the hosts. The first argument is
-      the host number, and the second is the name of the artifact.
+    * `artifacts` - generic template for reading artifacts. Supports completion
+      for the artifacts in S3.
 
 * `:WekaInvestigate` command: opens `teka investigate` terminal.
 
@@ -99,4 +95,3 @@ Features
     * Provide a job key as argument to investigate Bamboo/Reggie build.
     * If the _wekaticet_ feature is set, and you are editing a ticket, running
       without arguments will investigate the ticket you are editing.
-    * Set `g:weka_useDeka` to `1` to use `deka investigate` instead of `teka investigate`.

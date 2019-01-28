@@ -48,7 +48,7 @@ def find_weka_dir():
         for arg in args:
             if arg.startswith('-m'):
                 arg = arg[2:]
-            if arg.split('/')[-1] in ('viewer', 'teka.py', 'deka'):
+            if arg.split('/')[-1] in ('viewer', 'teka', 'teka.py', 'deka'):
                 return arg
 
     for cwd, args in iter_parents(os.getpid()):

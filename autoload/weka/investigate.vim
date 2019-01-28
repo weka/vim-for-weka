@@ -3,13 +3,13 @@ function! weka#investigate#openInvestigateTui(job) abort
 		return
 	endif
 
-	if empty(a:job) && has_key(b:, 'weka_ticketKey')
-		let l:job = b:weka_ticketKey
+	if empty(a:job) && has_key(g:, 'weka_ticketKey')
+		let l:job = g:weka_ticketKey
 	else
 		let l:job = a:job
 	endif
 
-	let l:command = weka#tdekaCommand('investigate '.shellescape(l:job))
+	let l:command = weka#tekaCommand('investigate '.shellescape(l:job))
 
 	if has('nvim')
 		new

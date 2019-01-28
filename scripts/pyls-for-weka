@@ -1,21 +1,34 @@
+#!/bin/sh
+
+export PYTHONPATH=$(python3 <<PYTHON
+import sys, os, shlex
+orig_paths = set(sys.path)
+import deps
+new_paths = [path for path in sys.path if path not in orig_paths]
+print(os.pathsep.join(map(shlex.quote, new_paths)))
+PYTHON
+):$PYTHONPATH
+
+pyls
+
 #!/usr/bin/python3
 
-import sys
+# import sys
 
-if '.' not in sys.path:
-    sys.path.append('.')
+# if '.' not in sys.path:
+    # sys.path.append('.')
 
-try:
-    import deps
-except ImportError:
-    pass
+# try:
+    # import deps
+# except ImportError:
+    # pass
 
-import pycodestyle
-pycodestyle.MAX_LINE_LENGTH = 130
+# import pycodestyle
+# pycodestyle.MAX_LINE_LENGTH = 130
 
-import yapf
-yapf.style.SetGlobalStyle(yapf.style.CreateStyleFromConfig('{column_limit: 130}'))
+# import yapf
+# yapf.style.SetGlobalStyle(yapf.style.CreateStyleFromConfig('{column_limit: 130}'))
 
 
-import pyls.__main__
-pyls.__main__.main()
+# import pyls.__main__
+# pyls.__main__.main()

@@ -6,3 +6,4 @@ endfunction
 
 au BufReadPost,BufNewFile /home/*/.mozilla/firefox/**/itsalltext/wekaio.atlassian.*.txt call s:detect()
 au BufReadPost,BufNewFile /tmp/textern-*/wekaio.atlassian.net*.txt call s:detect()
+au BufReadPost,BufNewFile /tmp/ghost-text*/buffer.txt call s:detect()
