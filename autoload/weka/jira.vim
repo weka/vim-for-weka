@@ -23,7 +23,9 @@ function! weka#jira#fetchIssueAsync(job, Callback) abort
 
 	function! OnExit(...) closure
 		try
-			let l:asJson = json_decode(join(l:gatheredData, ''))
+			let l:joinedData = join(l:gatheredData, '')
+			let l:joinedData = substitute(l:joinedData, '\v^.{-}\ze\{', '', '')
+			let l:asJson = json_decode(l:joinedData)
 		catch //
 			return
 		endtry
