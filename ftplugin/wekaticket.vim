@@ -31,12 +31,20 @@ let b:terminalogy_templates.testlight = extend({
 			\ 'command': printf('./teka -q logs %s testlight.log 2>/dev/null | awk -F\| ''/\0/'' | cut -d\| -f1,2,7-', g:weka_ticketKey),
 			\ }, b:terminalogy_basic)
 
+let b:terminalogy_templates['testlight-chain'] = extend({
+			\ 'command': printf('for logfile in testlight.log{.{\1..1},}; do ./teka -q logs %s $logfile 2>/dev/null; done | awk -F\| ''/\0/'' | cut -d\| -f1,2,7-', g:weka_ticketKey),
+			\ }, b:terminalogy_basic)
+
 let b:terminalogy_templates.jrpc = extend({
 			\ 'command': printf('./teka -q logs %s logs/jrpc.log 2>/dev/null | awk -F\| ''/\0/'' | cut -d\| -f1,2,6,7-', g:weka_ticketKey),
 			\ }, b:terminalogy_basic)
 
 let b:terminalogy_templates['objects-log'] = extend({
 			\ 'command': printf('./teka -q logs %s logs/objects.log 2>/dev/null | awk -F\| ''/\0/'' | cut -d\| -f1,7-', g:weka_ticketKey),
+			\ }, b:terminalogy_basic)
+
+let b:terminalogy_templates['objects-chain'] = extend({
+			\ 'command': printf('for logfile in logs/objects.log{.{\1..1},}; do ./teka -q logs %s $logfile 2>/dev/null; done | awk -F\| ''/\0/'' | cut -d\| -f1,7-', g:weka_ticketKey),
 			\ }, b:terminalogy_basic)
 
 let b:terminalogy_templates['objects-yaml'] = extend({

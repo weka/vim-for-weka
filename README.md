@@ -82,9 +82,13 @@ Features
     templates will be added:
     * `testlight` - read the `testlight.log`, with an `awk` filter to remove
       the clutter columns.
+    * `testlight-chain` - chain `testlight.log.#` up to the number specified as
+      the parameter.
     * `teka` - same thing for `teka.log`.
     * `jrpc` - same thing for `jrpc.log`.
     * `objects-log` - same thing for `objects.log`, where the **changes** in configuration are logged.
+    * `objects-chain` - chain `objects.log.#` up to the number specified as the
+      parameter.
     * `objects-yaml` - same thing for `objects.yaml.log`, where the **final** configuration is dumped.
     * `artifacts` - generic template for reading artifacts. Supports completion
       for the artifacts in S3.
