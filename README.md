@@ -90,6 +90,8 @@ Features
     * `objects-chain` - chain `objects.log.#` up to the number specified as the
       parameter.
     * `objects-yaml` - same thing for `objects.yaml.log`, where the **final** configuration is dumped.
+    * `objects-yq` - pipe `objects.yaml.log` through
+      [`yq`](https://github.com/mikefarah/yq) (which is like `jq` but for YAML)
     * `artifacts` - generic template for reading artifacts. Supports completion
       for the artifacts in S3.
 

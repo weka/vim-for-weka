@@ -51,6 +51,10 @@ let b:terminalogy_templates['objects-yaml'] = extend({
 			\ 'command': printf('./teka -q logs %s logs/objects.yaml.log 2>/dev/null | awk -F\| ''/\0/''', g:weka_ticketKey),
 			\ }, b:terminalogy_basic)
 
+let b:terminalogy_templates['objects-yq'] = extend({
+			\ 'command': printf('./teka -q logs %s logs/objects.yaml.log 2>/dev/null | grep -v ''Entering virtual env'' | yq --yaml-output ''\0''', g:weka_ticketKey),
+			\ }, b:terminalogy_basic)
+
 function! s:complete_artifacts(args)
 	if !exists('g:weka_ticketFields.artifacts')
 		echoerr 'List of artifacts not loaded yet'
