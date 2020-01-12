@@ -22,12 +22,15 @@ Features
 * Setting Python paths so that [JEDI](https://github.com/davidhalter/jedi-vim)
   can perform autocompletion correctly.
 
+    * This takes way to long, so it's in functions.
+    * Use `:call config_python_path#configForPythonInVim()` to configure the
+      paths for the Python environment that runs inside Vim.
     * `scripts/pyls-for-weka` does similar things for [Python Language
       Server](https://github.com/palantir/python-language-server), and if you
       have configured
       [LanguageClient-neovim](https://github.com/autozimu/LanguageClient-neovim)
-      to use PyLS it'll automatically set it to use this version when you open
-      Vim in the Weka project directory.
+      to use PyLS use `:call config_python_path#configForLanguageClient()` set
+      it to use this version when you open Vim in the Weka project directory.
 
 * `:WekaBuildErrors` command: fills the quickfix list with compilation errors
   fetched from the build server.
