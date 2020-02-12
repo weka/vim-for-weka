@@ -70,6 +70,7 @@ let b:terminalogy_templates.artifacts = extend({
 			\ 'command': printf('./teka -q logs %s \1 2>/dev/null | awk -F\| ''/\0/''', g:weka_ticketKey),
 			\ 'complete_1': function('s:complete_artifacts')
 			\ }, b:terminalogy_basic)
+command! -buffer WekaTerminalogyArtifacts call weka#terminalogy#artifactsFZF()
 
 function! s:readTracesToBuffer() abort
 	let l:viewerOutput = shellescape(weka#wekaProjectPathOrGlobal()).'/viewer.output'

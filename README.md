@@ -98,6 +98,10 @@ Features
     * `artifacts` - generic template for reading artifacts. Supports completion
       for the artifacts in S3.
 
+* `WekaTerminalogyArtifacts` to run FZF (you need
+  [`fzf`](https://github.com/junegunn/fzf) installed) and pick an artifact to
+  `teka log` with Terminalogy
+
 * `:WekaInvestigate` command: opens `teka investigate` terminal.
 
     * Requires Neovim or Vim8 with the terminal feature(`:echo has('terminal')`)
