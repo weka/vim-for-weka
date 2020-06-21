@@ -59,6 +59,10 @@ call extend(b:terminalogy_templates['objects-yq'], {
 			\ 'linesBelow': ['{code}'],
 			\ })
 
+let b:terminalogy_templates['stress0-file-syscalls'] = extend({
+			\ 'command': printf('./teka -q stress0 file-syscalls --system %s --target \1 --name \2 2>/dev/null | sort -k1n | sort -t] -k2 --stable | uniq', g:weka_ticketKey),
+			\ }, b:terminalogy_basic)
+
 function! s:complete_artifacts(args)
 	if !exists('g:weka_ticketFields.artifacts')
 		echoerr 'List of artifacts not loaded yet'
