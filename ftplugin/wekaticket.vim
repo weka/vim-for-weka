@@ -76,9 +76,37 @@ let b:terminalogy_templates.artifacts = extend({
 			\ }, b:terminalogy_basic)
 command! -buffer WekaTerminalogyArtifacts call weka#terminalogy#artifactsFZF()
 
-function! s:readTracesToBuffer() abort
-	let l:viewerOutput = shellescape(weka#wekaProjectPathOrGlobal()).'/viewer.output'
-	let l:lastLine = str2nr(system('awk "/# FILTER:/ {print NR}" '.l:viewerOutput.'| tail -1'))
-	execute 'read !echo {noformat}; awk "'.l:lastLine.'<=NR" '.l:viewerOutput.'; echo {noformat}'
+function! s:readTracesThatStartInLineNumbers(lineNumbers) abort
+	let l:lineNumbersCondition = join(map(a:lineNumbers, '"NR == " . v:val'), ' || ')
+	let l:viewerOutputPath = shellescape(weka#wekaProjectPathOrGlobal()).'/viewer.output'
+	let l:awkProgram = '/{noformat}/ {flag = 0} ' . l:lineNumbersCondition . ' {flag = 1} flag {print} /# ============/ {flag = 0} BEGIN {print "{noformat}"} END {print "{noformat}"}'
+	let l:lines = systemlist(printf('awk %s %s', shellescape(l:awkProgram), l:viewerOutputPath))
+	call append(line('.'), l:lines)
 endfunction
+
+function! s:readTracesToBuffer() abort
+	let l:viewerOutputPath = shellescape(weka#wekaProjectPathOrGlobal()).'/viewer.output'
+	let l:awkProgram = '/# FILTER:/ {printf "%d %s ", NR, $0} /COUNT:/ {print} FLAG {FLAG = 0; printf "%d %s\n", NR, $0} /{noformat}/ {FLAG = 1}'
+	let l:fzfPreview = 'tail +{1} ' . l:viewerOutputPath . ' | awk "/{noformat}/ {exit} // {print} /# ===============/ {exit}"'
+	let l:source = printf('awk %s %s', shellescape(l:awkProgram), l:viewerOutputPath)
+	let g:source = l:source
+	if exists('*fzf#run')
+		call fzf#run({
+					\ 'source': l:source,
+					\ 'options': ['--multi', '--tac', '--no-sort', '--with-nth=2..', '--preview', l:fzfPreview, '--preview-window=up'],
+					\ 'sink*': function('s:readTracesToBufferFzfSink'),
+					\ })
+	else
+		call s:readTracesToBufferFzfSink(systemlist(l:source . ' | tail -1'))
+	endif
+endfunction
+
+function! s:readTracesToBufferFzfSink(choice) abort
+	let l:lineNumbers = map(copy(a:choice), 'split(v:val)[0]')
+	if empty(l:lineNumbers)
+		return
+	endif
+	call s:readTracesThatStartInLineNumbers(l:lineNumbers)
+endfunction
+
 command! -buffer WekaPasteTraces call s:readTracesToBuffer()
