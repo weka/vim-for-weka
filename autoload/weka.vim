@@ -14,7 +14,12 @@ function! weka#wekaProjectPath() abort
 endfunction
 
 function! weka#isPathInWekaProject() abort
-    return !empty(weka#wekaProjectPath())
+    let l:wekaPath = weka#wekaProjectPath()
+    let l:myPath = getcwd()
+    if l:myPath[:len(l:wekaPath) - 1] != l:wekaPath
+	return 0
+    endif
+    return 0 <= index(['', '/', '\'], l:myPath[len(l:wekaPath)])
 endfunction
 
 function! weka#wekaProjectPathOrGlobal() abort
@@ -45,4 +50,27 @@ function! weka#vfwScriptPath(name) abort
             return l:path
         endif
     endfor
+endfunction
+
+function! weka#openTerminalForJob(commandTemplate, job) abort
+	if !exists(':terminal')
+		return
+	endif
+
+	if empty(a:job) && has_key(g:, 'weka_ticketKey')
+		let l:job = g:weka_ticketKey
+	else
+		let l:job = a:job
+	endif
+
+	let l:command = weka#tekaCommand(printf(a:commandTemplate, shellescape(l:job)))
+
+	if has('nvim')
+		new
+		call termopen(l:command)
+		normal! A
+	else
+		call term_start(l:command)
+	endif
+
 endfunction
