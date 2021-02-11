@@ -64,7 +64,7 @@ class Main(cli.Application):
         nvim_servers = list(find_nvim_servers())
         assert len(nvim_servers) <= 1
 
-        command = 'edit %s | %s' % (path, line)
+        command = "execute 'edit ' . weka#wekaProjectPath() . '%s' | %s" % (path, line)
         if nvim_servers:
             nvim = nvim_servers[0]
             nvim.command(command)
