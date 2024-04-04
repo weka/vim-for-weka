@@ -9,4 +9,4 @@ command! -bar -nargs=? WekaStress0Explore call weka#openTerminalForJob('stress0 
 command! WekaLoadTicketInfo call weka#jira#fetchIssueAsyncPutIn(g:weka_ticketKey, g:, 'weka_ticketFields')
 command! -nargs=? WekaSetTicket if !empty(<q-args>)| let g:weka_ticketKey = <q-args> | endif | WekaLoadTicketInfo
 
-command! WekaTicketDiff execute 'Gdiff ' . g:weka_ticketFields.commit
+command! WekaTicketDiff execute 'Gvdiffsplit ' . g:weka_ticketFields.commit
