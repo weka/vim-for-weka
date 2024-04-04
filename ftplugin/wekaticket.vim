@@ -53,11 +53,21 @@ let b:terminalogy_templates['objects-yaml'] = extend({
 
 let b:terminalogy_templates['objects-yq'] = extend({
 			\ 'command': printf('./teka -q logs %s logs/objects.yaml.log 2>/dev/null | grep -v ''Entering virtual env'' | yq --yaml-output ''\0''', g:weka_ticketKey),
-			\ }, b:terminalogy_basic)
-call extend(b:terminalogy_templates['objects-yq'], {
 			\ 'linesAbove': ['{code:yaml}'],
 			\ 'linesBelow': ['{code}'],
-			\ })
+			\ }, b:terminalogy_basic)
+
+let b:terminalogy_templates['objects-graph-history-yq'] = extend({
+			\ 'command': printf('./teka -q logs %s logs/object-graph-history.yaml.log 2>/dev/null | grep -v ''Entering virtual env'' | yq --yaml-output ''\0''', g:weka_ticketKey),
+			\ 'linesAbove': ['{code:yaml}'],
+			\ 'linesBelow': ['{code}'],
+			\ }, b:terminalogy_basic)
+
+let b:terminalogy_templates['config-yq'] = extend({
+			\ 'command': printf('./teka -q logs %s diagnostics/config.yaml 2>/dev/null | grep -v ''Entering virtual env'' | sed "s/!\S\+//g" | yq --yaml-output ''\0''', g:weka_ticketKey),
+			\ 'linesAbove': ['{code:yaml}'],
+			\ 'linesBelow': ['{code}'],
+			\ }, b:terminalogy_basic)
 
 let b:terminalogy_templates['stress0-file-syscalls'] = extend({
 			\ 'command': printf('./teka -q stress0 file-syscalls --system %s --target \1 --name \2 2>/dev/null | sort -k1n | sort -t] -k2 --stable | uniq', g:weka_ticketKey),
