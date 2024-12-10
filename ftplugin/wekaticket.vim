@@ -69,6 +69,12 @@ let b:terminalogy_templates['config-yq'] = extend({
 			\ 'linesBelow': ['{code}'],
 			\ }, b:terminalogy_basic)
 
+let b:terminalogy_templates['threads-yq-specific'] = extend({
+			\ 'command': printf('./teka -q logs %s logs/threads.yaml.log 2>/dev/null | yq --slurp --yaml-output ''. | map(select(.cmdline // "" | contains("py.test"))) | max_by(.created) | .. | select(type == "object" and .name == "\0")''', g:weka_ticketKey),
+			\ 'linesAbove': ['{code:yaml}'],
+			\ 'linesBelow': ['{code}'],
+			\ }, b:terminalogy_basic)
+
 let b:terminalogy_templates['stress0-file-syscalls'] = extend({
 			\ 'command': printf('./teka -q stress0 file-syscalls --system %s --target \1 --name \2 2>/dev/null | sort -k1n | sort -t] -k2 --stable | uniq', g:weka_ticketKey),
 			\ }, b:terminalogy_basic)
