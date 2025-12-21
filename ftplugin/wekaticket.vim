@@ -81,6 +81,12 @@ let b:terminalogy_templates['evidences-yq'] = extend({
 			\ 'linesBelow': ['{code}'],
 			\ }, b:terminalogy_basic)
 
+let b:terminalogy_templates['installation-configs-yq'] = extend({
+			\ 'command': printf('./teka -q logs %s logs/installation-configs.yaml.log 2>/dev/null | grep -v ''Entering virtual env'' | yq --yaml-output ''\0''', g:weka_ticketKey),
+			\ 'linesAbove': ['{code:yaml}'],
+			\ 'linesBelow': ['{code}'],
+			\ }, b:terminalogy_basic)
+
 let b:terminalogy_templates['stress0-file-syscalls'] = extend({
 			\ 'command': printf('./teka -q stress0 file-syscalls --system %s --target \1 --name \2 2>/dev/null | sort -k1n | sort -t] -k2 --stable | uniq', g:weka_ticketKey),
 			\ }, b:terminalogy_basic)
