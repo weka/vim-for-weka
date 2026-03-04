@@ -18,10 +18,15 @@ endfunction
 function! weka#jira#fetchIssueAsync(job, Callback) abort
 	let l:command = './teka -q explore -c "exec(sys.stdin.read())"'
 	let l:code = readfile(weka#vfwScriptPath('jira-issue-data-script.py'))
-	call insert(l:code, 'JIRA_TICKET_KEY = ' . string(a:job))
+	let l:env = {'JIRA_TICKET_KEY': a:job}
 	let l:gatheredData = []
+	let l:gatheredErr = []
 
-	function! OnExit(...) closure
+	function! OnExit(_job, exit_status, ...) closure
+		if a:exit_status != 0
+			echoerr join(l:gatheredErr)
+			return
+		endif
 		try
 			let l:joinedData = join(l:gatheredData, '')
 			let l:joinedData = substitute(l:joinedData, '\v^.{-}\ze\{', '', '')
@@ -34,17 +39,21 @@ function! weka#jira#fetchIssueAsync(job, Callback) abort
 
 	if exists('*jobstart') " Neovim
 		let l:vimjob = jobstart(l:command, {
+					\ 'env': l:env,
 					\ 'cwd': weka#wekaProjectPath(),
 					\ 'on_stdout': {job_id, data, event -> add(l:gatheredData, join(data, "\n"))},
+					\ 'on_stderr': {job_id, data, event -> add(l:gatheredErr, join(data, "\n"))},
 					\ 'on_exit': funcref('OnExit'),
 					\ })
 		call chansend(l:vimjob, l:code)
 		call chanclose(l:vimjob, 'stdin')
 	elseif exists('*job_start') "Vim
 		let l:vimjob = job_start(l:command, {
+					\ 'env': l:env,
 					\ 'cwd': weka#wekaProjectPath(),
 					\ 'in_mode': 'nl', 'out_mode': 'nl',
 					\ 'out_cb': {channel, msg -> add(l:gatheredData, msg)},
+					\ 'err_cb': {channel, msg -> add(l:gatheredErr, msg)},
 					\ 'exit_cb': funcref('OnExit'),
 					\ })
 		call string(ch_sendraw(l:vimjob, join(l:code, "\n")))
